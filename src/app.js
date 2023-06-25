@@ -5,19 +5,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const USERS = [
-  {
-    username: 'bobesponja',
-    avatar:
-      'https://cdn.shopify.com/s/files/1/0150/0643/3380/files/Screen_Shot_2019-07-01_at_11.35.42_AM_370x230@2x.png',
-  },
-];
-const TWEETS = [
-  {
-    username: 'bobesponja',
-    tweet: 'Eu amo hambúrguer de siri!',
-  },
-];
+const USERS = [];
+const TWEETS = [];
 
 app.post('/sign-up', (req, res) => {
   const { username, avatar } = req.body;
@@ -42,7 +31,7 @@ app.post('/tweets', (req, res) => {
 const getAvatar = (username) => USERS.find((e) => e.username === username).avatar;
 
 app.get('/tweets', (req, res) => {
-  const { page } = req.query;
+  const page = 'page' in req.query ? req.query.page : 1;
   if (isNaN(page) || page <= 0) res.status(400).send('Informe uma página válida!');
 
   const magic = TWEETS.slice(-10 * page, Math.max(0, TWEETS.length - 10 * (page - 1)));
